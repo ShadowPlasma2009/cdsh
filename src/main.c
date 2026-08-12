@@ -4,6 +4,8 @@
 #include <string.h>
 
 int main(void) {
+
+  #DEFINE motdpath ""
   char *user = getlogin();
   char host[128];
   gethostname(host, sizeof(host));
