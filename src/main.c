@@ -10,6 +10,7 @@ bool running = true;
 int main(void) {
   
   char *user = getlogin();
+  
   char host[128];
   gethostname(host, sizeof(host));
 
@@ -34,17 +35,22 @@ int main(void) {
     if (fgets(inputbuff, sizeof(inputbuff), stdin) != NULL) {
       inputbuff[strcspn(inputbuff, "\n")] = '\0';
 
+      char tempbuff[sizeof(inputbuff)];
+      strcpy(tempbuff, inputbuff);
+      char *cmd = strtok(tempbuff, " ");
+
       if (strcmp(inputbuff, "exit") == 0) {
         running = false;
         return 0;
       } else if (strcmp(inputbuff, "help") == 0) {
         help();
-      } else if (strcmp(inputbuff, "cd") == 0) {
+      } else if (strcmp(cmd, "cd") == 0) {
         cd(inputbuff);
+      } else if (strcmp(inputbuff, "pwd") == 0) {
+        printf("%s\n", cwd);
       } else { cmdhandler(inputbuff); }
     }
   }
-  
 }
 
 int help(void) {
@@ -58,5 +64,11 @@ int help(void) {
 }
 
 int cd(char path[]) {
-  //TODO
+  // token1 is useless but needed, ignore
+  char *token1 = strtok(path, " ");
+  char *pathtok   = strtok(NULL, " ");
+
+  // Simple path print for now
+  printf("%s", pathtok);
+  return 0;
 }
