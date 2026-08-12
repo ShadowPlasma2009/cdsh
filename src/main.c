@@ -64,9 +64,8 @@ int help(void) {
 }
 
 int cd(char path[]) {
-  // token1 is useless but needed, ignore
-  char *token1 = strtok(path, " ");
-  char *pathtok   = strtok(NULL, " ");
+  strtok(path, " ");
+  char *pathtok = strtok(NULL, " ");
 
   if (chdir(pathtok) != 0) {
     perror("chdir");
