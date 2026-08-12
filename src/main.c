@@ -68,7 +68,10 @@ int cd(char path[]) {
   char *token1 = strtok(path, " ");
   char *pathtok   = strtok(NULL, " ");
 
-  // Simple path print for now
-  printf("%s", pathtok);
+  if (chdir(pathtok) != 0) {
+    perror("chdir");
+    return 1;
+  }
+
   return 0;
 }
