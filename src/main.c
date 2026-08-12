@@ -36,6 +36,7 @@ int main(void) {
 
       if (strcmp(inputbuff, "exit") == 0) {
         running = false;
+        return 0;
       } else if (strcmp(inputbuff, "help") == 0) {
         help();
       } else { cmdhandler(inputbuff); }
