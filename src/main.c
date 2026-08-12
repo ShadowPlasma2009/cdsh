@@ -4,8 +4,8 @@
 #include <string.h>
 
 int main(void) {
-  char host[128];
   char *user = getlogin();
+  char host[128];
   gethostname(host, sizeof(host));
 
   char cwd[4096];
@@ -13,4 +13,9 @@ int main(void) {
   
   // testing
   printf("%s\n%s\n%s\n", host, user, cwd);
+
+  // testing ps1
+  char ps1[1024];
+  snprintf(ps1, sizeof(ps1), "%s@%s #> ", user, host);
+  printf("%s", ps1);
 }
