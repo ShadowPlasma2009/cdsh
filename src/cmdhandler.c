@@ -23,10 +23,14 @@ void cmdhandler(char command[]) {
   pid_t pid = fork();
 
   if (pid < 0) {
-    perror("fork failed");
+    perror("Fork failed");
     exit(1);
   } else if (pid == 0) {
-    execvp(argv[0], argv);  
+    //error checking
+    if (execvp(argv[0], argv) == -1) {
+        perror("Command failed");
+    }
+    _exit(1);
   } else {
     int status;
     waitpid(pid, &status, 0);
