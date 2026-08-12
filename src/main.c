@@ -4,8 +4,9 @@
 #include <string.h>
 
 int main(void) {
-  char *host = getenv("HOST");
-  char *user = getenv("USERNAME");
+  char host[128];
+  char *user = getlogin();
+  gethostname(host, sizeof(host));
 
   char cwd[4096];
   getcwd(cwd, sizeof(cwd));
