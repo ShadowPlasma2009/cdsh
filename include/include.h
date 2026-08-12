@@ -1,6 +1,7 @@
 #ifndef INCLUDE_H
 #define INCLUDE_H
 
-int cmdhandler(char *command[]);
+void cmdhandler(char *command);
+int help(void);
 
 #endif

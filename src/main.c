@@ -2,10 +2,11 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
+#include "include.h"
 
 int main(void) {
 
-  #DEFINE motdpath ""
+  #define MOTDPATH "placeholder"
   char *user = getlogin();
   char host[128];
   gethostname(host, sizeof(host));
@@ -16,6 +17,8 @@ int main(void) {
   // testing
   printf("%s\n%s\n%s\n", host, user, cwd);
 
+  printf("\nWelcome to cut-down shell.\n");
+
   // testing ps1
   char ps1[1024];
   snprintf(ps1, sizeof(ps1), "%s@%s #> ", user, host);
@@ -24,8 +27,24 @@ int main(void) {
   fflush(stdout);
 
   char inputbuff[4096];
-  fgets(inputbuff, sizeof(inputbuff), stdin);
-  inputbuff[strcspn(inputbuff, "\n")] = '\0';
+  
+  if (fgets(inputbuff, sizeof(inputbuff), stdin) != NULL) {
+    inputbuff[strcspn(inputbuff, "\n")] = '\0';
 
-  printf("Testprint input: %s\n", inputbuff);
+    if (strcmp(inputbuff, "exit") == 0) {
+      return 0;
+    } else if (strcmp(inputbuff, "help") == 0) {
+      help();
+    } else { cmdhandler(inputbuff); }
+  }
+}
+
+int help(void) {
+  printf("cut-down shell help\n");
+  
+  printf("\nInbuilt commands:\n");
+  printf("  help\n");
+  printf("  exit\n");
+  printf("  cd <directory>\n");
+  return 0;
 }
