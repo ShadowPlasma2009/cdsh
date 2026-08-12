@@ -11,5 +11,5 @@ int main(void) {
   getcwd(cwd, sizeof(cwd));
   
   // testing
-  printf("%s\n%s\n%s", host, user, cwd);
+  printf("%s\n%s\n%s\n", host, user, cwd);
 }
