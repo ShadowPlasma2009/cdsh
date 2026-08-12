@@ -1,0 +1,3 @@
+*.o
+.vscode/
+# probably add our final executable here but idk what thats gonna be called yet
