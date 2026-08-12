@@ -12,7 +12,7 @@ void cmdhandler(char command[]) {
   //char *env[] = { NULL};
   int i = 0;
 
-  char *argv[64];
+  char *argv[64] = {};
   char *token = strtok(command, " ");
   
   while (token != NULL) {
@@ -26,7 +26,7 @@ void cmdhandler(char command[]) {
     perror("fork failed");
     exit(1);
   } else if (pid == 0) {
-    execvp(argv[0], &token);  
+    execvp(argv[0], argv);  
   } else {
     int status;
     waitpid(pid, &status, 0);
