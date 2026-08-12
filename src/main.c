@@ -18,4 +18,12 @@ int main(void) {
   char ps1[1024];
   snprintf(ps1, sizeof(ps1), "%s@%s #> ", user, host);
   printf("%s", ps1);
+  
+  fflush(stdout);
+
+  char inputbuff[4096];
+  fgets(inputbuff, sizeof(inputbuff), stdin);
+  inputbuff[strcspn(inputbuff, "\n")] = '\0';
+
+  printf("Testprint input: %s\n", inputbuff);
 }
