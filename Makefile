@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -g
+CFLAGS = -g -I./include
 TARGET = cdsh
 SRCS = $(wildcard src/*.c)
 OBJS = $(SRCS:.c=.o)

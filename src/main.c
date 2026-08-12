@@ -2,11 +2,13 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 #include "include.h"
+#define MOTDPATH "placeholder"
 
+bool running = true;
 int main(void) {
-
-  #define MOTDPATH "placeholder"
+  
   char *user = getlogin();
   char host[128];
   gethostname(host, sizeof(host));
@@ -19,24 +21,27 @@ int main(void) {
 
   printf("\nWelcome to cut-down shell.\n");
 
-  // testing ps1
-  char ps1[1024];
-  snprintf(ps1, sizeof(ps1), "%s@%s #> ", user, host);
-  printf("%s", ps1);
-  
-  fflush(stdout);
+  while (running) {
+    // testing ps1
+    char ps1[1024];
+    snprintf(ps1, sizeof(ps1), "%s@%s #> ", user, host);
+    printf("%s", ps1);
+    
+    fflush(stdout);
 
-  char inputbuff[4096];
-  
-  if (fgets(inputbuff, sizeof(inputbuff), stdin) != NULL) {
-    inputbuff[strcspn(inputbuff, "\n")] = '\0';
+    char inputbuff[4096];
+    
+    if (fgets(inputbuff, sizeof(inputbuff), stdin) != NULL) {
+      inputbuff[strcspn(inputbuff, "\n")] = '\0';
 
-    if (strcmp(inputbuff, "exit") == 0) {
-      return 0;
-    } else if (strcmp(inputbuff, "help") == 0) {
-      help();
-    } else { cmdhandler(inputbuff); }
+      if (strcmp(inputbuff, "exit") == 0) {
+        running = false;
+      } else if (strcmp(inputbuff, "help") == 0) {
+        help();
+      } else { cmdhandler(inputbuff); }
+    }
   }
+  
 }
 
 int help(void) {

@@ -2,11 +2,34 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include "include.h"
 
 void cmdhandler(char command[]) {
   // For development purposes:
-  printf("%s\n", command);
+  //printf("%s\n", command)
+  //char *env[] = { NULL};
+  int i = 0;
 
-  system(command);
+  char *argv[64];
+  char *token = strtok(command, " ");
+  
+  while (token != NULL) {
+    argv[i++] = token;
+    token = strtok(NULL, " ");
+  }
+
+  pid_t pid = fork();
+
+  if (pid < 0) {
+    perror("fork failed");
+    exit(1);
+  } else if (pid == 0) {
+    execvp(argv[0], &token);  
+  } else {
+    int status;
+    waitpid(pid, &status, 0);
+  }
+  
 }
