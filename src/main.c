@@ -47,6 +47,8 @@ int main(void) {
       } else if (strcmp(cmd, "cd") == 0) {
         cd(inputbuff);
       } else if (strcmp(inputbuff, "pwd") == 0) {
+        char cwd[4096];
+        getcwd(cwd, sizeof(cwd));
         printf("%s\n", cwd);
       } else { cmdhandler(inputbuff); }
     }
