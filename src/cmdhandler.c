@@ -34,6 +34,5 @@ void cmdhandler(char command[]) {
   } else {
     int status;
     waitpid(pid, &status, 0);
-  }
-  
+  } 
 }
