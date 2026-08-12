@@ -59,9 +59,10 @@ int help(void) {
   printf("cut-down shell help\n");
   
   printf("\nInbuilt commands:\n");
+  printf("  cd <directory>\n");
+  printf("  pwd\n");
   printf("  help\n");
   printf("  exit\n");
-  printf("  cd <directory>\n");
   return 0;
 }
 
