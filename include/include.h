@@ -3,5 +3,6 @@
 
 void cmdhandler(char *command);
 int help(void);
+int cd(char *path);
 
 #endif

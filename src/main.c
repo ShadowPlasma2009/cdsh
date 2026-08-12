@@ -39,6 +39,8 @@ int main(void) {
         return 0;
       } else if (strcmp(inputbuff, "help") == 0) {
         help();
+      } else if (strcmp(inputbuff, "cd") == 0) {
+        cd(inputbuff);
       } else { cmdhandler(inputbuff); }
     }
   }
@@ -53,4 +55,8 @@ int help(void) {
   printf("  exit\n");
   printf("  cd <directory>\n");
   return 0;
+}
+
+int cd(char path[]) {
+  //TODO
 }
