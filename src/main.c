@@ -39,6 +39,8 @@ int main(void) {
       strcpy(tempbuff, inputbuff);
       char *cmd = strtok(tempbuff, " ");
 
+      if (strlen(inputbuff) == 0) continue;
+
       if (strcmp(inputbuff, "exit") == 0) {
         running = false;
         return 0;

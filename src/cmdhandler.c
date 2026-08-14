@@ -7,9 +7,6 @@
 #include "include.h"
 
 void cmdhandler(char command[]) {
-  // For development purposes:
-  //printf("%s\n", command)
-  //char *env[] = { NULL};
   int i = 0;
 
   char *argv[64] = {};
