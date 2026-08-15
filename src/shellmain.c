@@ -108,6 +108,23 @@ void read_input(char *buff, size_t max_len) {
   while (i < max_len) {
     if (read(STDIN_FILENO, &c, 1) <= 0) break;
 
+    if (c == '\x1b') {
+      char seq[2];
+
+      if (read(STDIN_FILENO, &seq[0], 1) == 1 && read(STDIN_FILENO, &seq[1], 1) == 0) {
+        if (seq[0] == '[') {
+          switch (seq[1]) {
+            case 'A':
+            case 'B':
+            case 'C':
+            case 'D':
+              break;
+          }
+        }
+      }
+      continue;
+    }
+
     if (c == '\n' || c == '\r') {
       write(STDOUT_FILENO, "\n", 1);
       break;
