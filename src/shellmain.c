@@ -33,8 +33,10 @@ int main(void) {
     fflush(stdout);
 
     char inputbuff[4096];
+    memset(inputbuff, '\0', sizeof(inputbuff));
 
     read_input(inputbuff, sizeof(inputbuff));
+    disable_raw();
     
     char tempbuff[sizeof(inputbuff)];
     strcpy(tempbuff, inputbuff);
@@ -100,47 +102,70 @@ void enable_raw(void) {
 }
 
 void read_input(char *buff, size_t max_len) {
+  size_t crsr_pos = 0;
   size_t i = 0;
   char c;
 
   enable_raw();
 
-  while (i < max_len) {
+  while (i < max_len - 1) {
     if (read(STDIN_FILENO, &c, 1) <= 0) break;
 
     if (c == '\x1b') {
       char seq[2];
-
-      if (read(STDIN_FILENO, &seq[0], 1) == 1 && read(STDIN_FILENO, &seq[1], 1) == 0) {
-        if (seq[0] == '[') {
-          switch (seq[1]) {
-            case 'A':
-            case 'B':
-            case 'C':
-            case 'D':
-              break;
-          }
+      if (read(STDIN_FILENO, &seq[0], 1) == 1 && read(STDIN_FILENO, &seq[1], 1) == 1) {
+        switch (seq[1]) {
+          case 'A':
+            break;
+          case 'B':
+            break;
+          case 'C':
+            // right arrow key handling
+            if (crsr_pos < i) {
+              crsr_pos++;
+              write(STDOUT_FILENO, "\x1b[C", 3);
+            }
+          break;
+          case 'D':
+            // left arrow key handling
+            if (crsr_pos > 0) {
+              crsr_pos--;
+              write(STDOUT_FILENO, "\x1b[D", 3);
+            }
         }
-      }
-      continue;
+      } continue;
     }
 
     if (c == '\n' || c == '\r') {
       write(STDOUT_FILENO, "\n", 1);
       break;
     } else if (c == 127 || c == '\b') {
-      if (i > 0) {
+      if (crsr_pos > 0) {
+        memmove(&buff[crsr_pos - 1], &buff[crsr_pos], i - crsr_pos + 1);
+        crsr_pos--;
         i--;
-        write(STDOUT_FILENO, "\b \b", 3);
+
+        write(STDOUT_FILENO, "\b", 1);
+        write(STDOUT_FILENO, &buff[crsr_pos], i - crsr_pos);
+        write(STDOUT_FILENO, " ", 1);
+
+        for (size_t k = 0; k <= (i - crsr_pos); k++) {
+          write(STDOUT_FILENO, "\x1b[D", 3);
+        }
       }
     } else if (c == 4) {
       if (i == 0) exit(0);
     } else {
-      buff[i++] = c;
-      write(STDOUT_FILENO, &c, 1);
+      memmove(&buff[crsr_pos + 1], &buff[crsr_pos], i - crsr_pos);
+      buff[crsr_pos] = c;
+      crsr_pos++;
+      i++;
+      write(STDOUT_FILENO, &buff[crsr_pos - 1], i - crsr_pos + 1);
+      for (size_t k = 0; k < i - crsr_pos; k++) {
+        write(STDOUT_FILENO, "\x1b[D", 3);
+      }
     }
 
     buff[i] = '\0';
-    disable_raw();
   }
 }
